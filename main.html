@@ -526,3 +526,30 @@
         }
       });
 
+      document.getElementById("btn-load-owned").addEventListener("click", async function() {
+        if (!contract || !signer) { document.getElementById("owned-list").textContent = "Connect and set contract."; return; }
+        try {
+          var addr = await signer.getAddress();
+          var ids = await contract.getOwnedArtworkIds(addr);
+          if (!ids.length) { document.getElementById("owned-list").innerHTML = "<div>No artworks owned</div>"; return; }
+          document.getElementById("owned-list").innerHTML = ids.slice(0, 50).map(function(id) { return "<div>Artwork #" + id.toString() + "</div>"; }).join("");
+        } catch (e) {
+          document.getElementById("owned-list").textContent = "Error: " + (e.message || "load failed");
+        }
+      });
+
+      document.getElementById("btn-load-proceeds").addEventListener("click", async function() {
+        if (!contract || !signer) { document.getElementById("proceeds-display").textContent = "Connect and set contract."; return; }
+        try {
+          var addr = await signer.getAddress();
+          var artistPending = await contract.getPendingArtistProceeds(addr);
+          var out = "<div>Artist pending: " + ethers.formatEther(artistPending) + " ETH</div>";
+          document.getElementById("proceeds-display").innerHTML = out;
+        } catch (e) {
+          document.getElementById("proceeds-display").textContent = "Error: " + (e.message || "load failed");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
