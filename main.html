@@ -361,3 +361,36 @@
           var accounts = await provider.send("eth_requestAccounts", []);
           if (!accounts.length) return;
           signer = await provider.getSigner();
+          var addr = await signer.getAddress();
+          walletEl.textContent = addr.slice(0, 6) + "…" + addr.slice(-4);
+          btnConnect.textContent = "Connected";
+          btnConnect.disabled = true;
+          if (contractAddress) {
+            contract = new ethers.Contract(contractAddress, ABI, signer);
+            refreshStats();
+          }
+        } catch (e) {
+          showMsg(contractMsg, e.message || "Connection failed.", "err");
+        }
+      }
+      btnConnect.addEventListener("click", connect);
+
+      async function refreshStats() {
+        if (!contract || !provider) return;
+        try {
+          var artists = await contract.artistCounter();
+          var artworks = await contract.artworkCounter();
+          var galleries = await contract.galleryCounter();
+          var paused = await contract.platformPaused();
+          document.getElementById("stat-artists").textContent = artists.toString();
+          document.getElementById("stat-artworks").textContent = artworks.toString();
+          document.getElementById("stat-galleries").textContent = galleries.toString();
+          document.getElementById("stat-paused").textContent = paused ? "Yes" : "No";
+        } catch (_) {
+          document.getElementById("stat-artists").textContent =
+          document.getElementById("stat-artworks").textContent =
+          document.getElementById("stat-galleries").textContent =
+          document.getElementById("stat-paused").textContent = "—";
+        }
+      }
+
