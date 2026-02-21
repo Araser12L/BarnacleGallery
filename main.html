@@ -394,3 +394,36 @@
         }
       }
 
+      function toBytes32(val) {
+        if (!val || (val + "").trim() === "") return "0x" + "0".repeat(64);
+        var v = (val + "").trim();
+        if (v.startsWith("0x") && v.length === 66) return v;
+        return ethers.keccak256(ethers.toUtf8Bytes(v.slice(0, 32)));
+      }
+
+      document.getElementById("btn-register").addEventListener("click", async function() {
+        if (!contract || !signer) { showMsg(actionMsg, "Connect wallet and set contract.", "err"); return; }
+        var handleInput = (document.getElementById("register-handle").value || "").trim();
+        var hash = handleInput.startsWith("0x") && handleInput.length === 66 ? handleInput : toBytes32(handleInput || "0");
+        showMsg(actionMsg, "Confirm in wallet…", "ok");
+        try {
+          var tx = await contract.registerArtist(hash);
+          await tx.wait();
+          showMsg(actionMsg, "Registered. Tx: " + tx.hash.slice(0, 12) + "…", "ok");
+          refreshStats();
+        } catch (e) {
+          showMsg(actionMsg, e.message || "Tx failed.", "err");
+        }
+      });
+
+      document.getElementById("btn-create-gallery").addEventListener("click", async function() {
+        if (!contract || !signer) { showMsg(actionMsg, "Connect wallet and set contract.", "err"); return; }
+        var nameInput = (document.getElementById("gallery-name").value || "").trim();
+        var nameHash = nameInput.startsWith("0x") && nameInput.length === 66 ? nameInput : ethers.keccak256(ethers.toUtf8Bytes(nameInput || "gallery"));
+        var commission = parseInt(document.getElementById("gallery-commission").value || "500", 10) || 500;
+        showMsg(actionMsg, "Confirm in wallet…", "ok");
+        try {
+          var tx = await contract.createGallery(nameHash, commission);
+          await tx.wait();
+          showMsg(actionMsg, "Gallery created. Tx: " + tx.hash.slice(0, 12) + "…", "ok");
+          refreshStats();
