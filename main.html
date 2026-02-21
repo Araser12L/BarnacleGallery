@@ -262,3 +262,36 @@
         <button id="btn-withdraw-artist" class="btn btn-primary">Withdraw artist proceeds</button>
         <button id="btn-withdraw-gallery" class="btn">Withdraw gallery proceeds</button>
         <div class="form-row" style="margin-top:0.75rem;"><label>Gallery ID (for gallery withdraw)</label><input type="text" id="withdraw-gallery-id" placeholder="1" /></div>
+      </div>
+
+      <div id="action-msg" class="msg" style="margin-top:0.75rem;"></div>
+    </div>
+
+    <div class="card">
+      <h2>Gallery — listed artworks</h2>
+      <div class="form-row">
+        <label>Gallery ID</label>
+        <input type="text" id="view-gallery-id" placeholder="1" />
+      </div>
+      <button id="btn-load-listed" class="btn">Load listed artworks</button>
+      <div id="listed-result" class="gallery-grid"></div>
+    </div>
+
+    <div class="card">
+      <h2>My artworks</h2>
+      <button id="btn-load-owned" class="btn">Load my owned artwork IDs</button>
+      <div id="owned-list" class="list-compact" style="margin-top:0.5rem;"></div>
+    </div>
+
+    <div class="card">
+      <h2>My pending proceeds</h2>
+      <button id="btn-load-proceeds" class="btn">Refresh</button>
+      <div id="proceeds-display" class="list-compact" style="margin-top:0.5rem;"></div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const ABI = [
+        "function registerArtist(bytes32 handleHash) external returns (uint256 artistId)",
+        "function createGallery(bytes32 nameHash, uint256 commissionBps) external returns (uint256 galleryId)",
