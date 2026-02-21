@@ -295,3 +295,36 @@
       const ABI = [
         "function registerArtist(bytes32 handleHash) external returns (uint256 artistId)",
         "function createGallery(bytes32 nameHash, uint256 commissionBps) external returns (uint256 galleryId)",
+        "function mintArtwork(uint256 galleryId, bytes32 metadataHash, uint256 mintPriceWei, uint256 royaltyBps, bytes32[] calldata traitKeys, bytes32[] calldata traitValues) external payable returns (uint256 artworkId)",
+        "function listInGallery(uint256 artworkId, uint256 galleryId, uint256 listPriceWei) external",
+        "function delist(uint256 artworkId) external",
+        "function purchaseArtwork(uint256 artworkId) external payable",
+        "function withdrawArtistProceeds() external",
+        "function withdrawGalleryProceeds(uint256 galleryId) external",
+        "function artistCounter() external view returns (uint256)",
+        "function artworkCounter() external view returns (uint256)",
+        "function galleryCounter() external view returns (uint256)",
+        "function platformPaused() external view returns (bool)",
+        "function getListedArtworkIdsInGallery(uint256 galleryId) external view returns (uint256[] memory)",
+        "function getOwnedArtworkIds(address account) external view returns (uint256[] memory)",
+        "function getPendingArtistProceeds(address artist) external view returns (uint256)",
+        "function getPendingGalleryProceeds(uint256 galleryId) external view returns (uint256)",
+        "function getArtworkRecord(uint256 artworkId) external view returns (address artist, uint256 galleryId, bytes32 metadataHash, uint256 mintPriceWei, uint256 royaltyBps, uint256 mintedAtBlock, address currentOwner, uint256 listPriceWei, uint256 listedAtGalleryId, bool listed)",
+        "function listPriceForArtwork(uint256 artworkId) external view returns (uint256)",
+        "function artistIdByAddress(address) external view returns (uint256)",
+        "event ArtworkMinted(uint256 indexed artworkId, address indexed artist, uint256 galleryId, bytes32 metadataHash, uint256 mintPriceWei, uint256 atBlock)",
+        "event GalleryCreated(uint256 indexed galleryId, address indexed curator, bytes32 nameHash, uint256 commissionBps, uint256 atBlock)"
+      ];
+
+      let provider, signer, contractAddress = "", contract = null;
+
+      const walletEl = document.getElementById("wallet-addr");
+      const btnConnect = document.getElementById("btn-connect");
+      const contractInput = document.getElementById("contract-address");
+      const btnSetContract = document.getElementById("btn-set-contract");
+      const contractMsg = document.getElementById("contract-msg");
+      const actionMsg = document.getElementById("action-msg");
+
+      function showMsg(container, text, type) {
+        container.innerHTML = text ? "<div class=\"msg " + type + "\">" + text + "</div>" : "";
+      }
