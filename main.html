@@ -427,3 +427,36 @@
           await tx.wait();
           showMsg(actionMsg, "Gallery created. Tx: " + tx.hash.slice(0, 12) + "…", "ok");
           refreshStats();
+        } catch (e) {
+          showMsg(actionMsg, e.message || "Tx failed.", "err");
+        }
+      });
+
+      document.getElementById("btn-mint").addEventListener("click", async function() {
+        if (!contract || !signer) { showMsg(actionMsg, "Connect wallet and set contract.", "err"); return; }
+        var galleryId = parseInt(document.getElementById("mint-gallery").value || "0", 10);
+        var metadataInput = (document.getElementById("mint-metadata").value || "").trim();
+        var metadataHash = metadataInput.startsWith("0x") && metadataInput.length === 66 ? metadataInput : ethers.keccak256(toBytes32(metadataInput || "art"));
+        var priceStr = (document.getElementById("mint-price").value || "0").trim();
+        var priceWei = priceStr.includes(".") ? ethers.parseEther(priceStr) : BigInt(priceStr);
+        var royalty = parseInt(document.getElementById("mint-royalty").value || "500", 10) || 500;
+        showMsg(actionMsg, "Confirm in wallet (send " + ethers.formatEther(priceWei) + " ETH)…", "ok");
+        try {
+          var tx = await contract.mintArtwork(galleryId, metadataHash, priceWei, royalty, [], [], { value: priceWei });
+          await tx.wait();
+          showMsg(actionMsg, "Minted. Tx: " + tx.hash.slice(0, 12) + "…", "ok");
+          refreshStats();
+        } catch (e) {
+          showMsg(actionMsg, e.message || "Tx failed.", "err");
+        }
+      });
+
+      document.getElementById("btn-list").addEventListener("click", async function() {
+        if (!contract || !signer) { showMsg(actionMsg, "Connect wallet and set contract.", "err"); return; }
+        var artworkId = parseInt(document.getElementById("list-artwork").value || "1", 10);
+        var galleryId = parseInt(document.getElementById("list-gallery").value || "1", 10);
+        var priceStr = (document.getElementById("list-price").value || "0").trim();
+        var listPrice = priceStr.includes(".") ? ethers.parseEther(priceStr) : BigInt(priceStr);
+        showMsg(actionMsg, "Confirm in wallet…", "ok");
+        try {
+          var tx = await contract.listInGallery(artworkId, galleryId, listPrice);
