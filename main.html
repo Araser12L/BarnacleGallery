@@ -493,3 +493,36 @@
           showMsg(actionMsg, e.message || "Tx failed.", "err");
         }
       });
+
+      document.getElementById("btn-withdraw-gallery").addEventListener("click", async function() {
+        if (!contract || !signer) { showMsg(actionMsg, "Connect wallet and set contract.", "err"); return; }
+        var galleryId = parseInt(document.getElementById("withdraw-gallery-id").value || "1", 10);
+        showMsg(actionMsg, "Confirm in wallet…", "ok");
+        try {
+          var tx = await contract.withdrawGalleryProceeds(galleryId);
+          await tx.wait();
+          showMsg(actionMsg, "Gallery proceeds withdrawn. Tx: " + tx.hash.slice(0, 12) + "…", "ok");
+        } catch (e) {
+          showMsg(actionMsg, e.message || "Tx failed.", "err");
+        }
+      });
+
+      document.getElementById("btn-load-listed").addEventListener("click", async function() {
+        if (!contract || !provider) { document.getElementById("listed-result").innerHTML = "<span class=\"list-compact\">Set contract first.</span>"; return; }
+        var galleryId = parseInt(document.getElementById("view-gallery-id").value || "1", 10);
+        try {
+          var ids = await contract.getListedArtworkIdsInGallery(galleryId);
+          var html = "";
+          for (var i = 0; i < Math.min(ids.length, 24); i++) {
+            var aid = ids[i];
+            var listPrice = await contract.listPriceForArtwork(aid);
+            var rec = await contract.getArtworkRecord(aid);
+            html += "<div class=\"art-card\"><div class=\"id\">#" + aid.toString() + "</div><div class=\"price\">" + ethers.formatEther(listPrice) + " ETH</div><div class=\"owner\">" + (rec.currentOwner || "").slice(0, 10) + "…</div></div>";
+          }
+          if (!html) html = "<span class=\"list-compact\">No listed artworks in this gallery.</span>";
+          document.getElementById("listed-result").innerHTML = html;
+        } catch (e) {
+          document.getElementById("listed-result").innerHTML = "<span class=\"msg err\">" + (e.message || "Load failed") + "</span>";
+        }
+      });
+
