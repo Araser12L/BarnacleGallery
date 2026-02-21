@@ -163,3 +163,36 @@
     }
     .art-card .id { font-family: var(--font-mono); color: var(--muted); }
     .art-card .price { color: var(--teal); margin-top: 0.35rem; }
+    .art-card .owner { font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; overflow: hidden; text-overflow: ellipsis; }
+    .list-compact { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); }
+    .list-compact div { padding: 0.35rem 0; border-bottom: 1px solid var(--border); }
+    .list-compact div:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">
+        <span class="logo-emoji">🦪</span>
+        <div>
+          <div class="logo-text">Barnacle Gallery</div>
+          <div class="tagline">Legendary art generator — mint, list, collect</div>
+        </div>
+      </div>
+      <div class="wallet-row">
+        <span id="wallet-addr" class="addr">—</span>
+        <button id="btn-connect" class="btn">Connect</button>
+      </div>
+    </header>
+
+    <div class="card">
+      <h2>Contract</h2>
+      <div class="form-row">
+        <label>LegendaryBarnacle contract address</label>
+        <input type="text" id="contract-address" placeholder="0x…" />
+      </div>
+      <button id="btn-set-contract" class="btn btn-primary">Set contract</button>
+      <div id="contract-msg"></div>
+    </div>
+
+    <div class="card">
