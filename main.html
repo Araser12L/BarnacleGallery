@@ -460,3 +460,36 @@
         showMsg(actionMsg, "Confirm in wallet…", "ok");
         try {
           var tx = await contract.listInGallery(artworkId, galleryId, listPrice);
+          await tx.wait();
+          showMsg(actionMsg, "Listed. Tx: " + tx.hash.slice(0, 12) + "…", "ok");
+        } catch (e) {
+          showMsg(actionMsg, e.message || "Tx failed.", "err");
+        }
+      });
+
+      document.getElementById("btn-purchase").addEventListener("click", async function() {
+        if (!contract || !signer) { showMsg(actionMsg, "Connect wallet and set contract.", "err"); return; }
+        var artworkId = parseInt(document.getElementById("purchase-artwork").value || "1", 10);
+        var valueStr = (document.getElementById("purchase-value").value || "0").trim();
+        var valueWei = valueStr.includes(".") ? ethers.parseEther(valueStr) : BigInt(valueStr);
+        showMsg(actionMsg, "Confirm in wallet (send " + ethers.formatEther(valueWei) + " ETH)…", "ok");
+        try {
+          var tx = await contract.purchaseArtwork(artworkId, { value: valueWei });
+          await tx.wait();
+          showMsg(actionMsg, "Purchased. Tx: " + tx.hash.slice(0, 12) + "…", "ok");
+        } catch (e) {
+          showMsg(actionMsg, e.message || "Tx failed.", "err");
+        }
+      });
+
+      document.getElementById("btn-withdraw-artist").addEventListener("click", async function() {
+        if (!contract || !signer) { showMsg(actionMsg, "Connect wallet and set contract.", "err"); return; }
+        showMsg(actionMsg, "Confirm in wallet…", "ok");
+        try {
+          var tx = await contract.withdrawArtistProceeds();
+          await tx.wait();
+          showMsg(actionMsg, "Withdrawn. Tx: " + tx.hash.slice(0, 12) + "…", "ok");
+        } catch (e) {
+          showMsg(actionMsg, e.message || "Tx failed.", "err");
+        }
+      });
