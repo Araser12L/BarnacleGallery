@@ -229,3 +229,36 @@
           <label>Gallery name hash (bytes32 hex)</label>
           <input type="text" id="gallery-name" placeholder="0x…" />
         </div>
+        <div class="form-row">
+          <label>Commission (bps, max 2500)</label>
+          <input type="text" id="gallery-commission" placeholder="500" />
+        </div>
+        <button id="btn-create-gallery" class="btn btn-primary">Create gallery</button>
+      </div>
+
+      <div id="panel-mint" class="tab-content">
+        <div class="form-row"><label>Gallery ID (0 = no gallery)</label><input type="text" id="mint-gallery" placeholder="0" /></div>
+        <div class="form-row"><label>Metadata hash (bytes32)</label><input type="text" id="mint-metadata" placeholder="0x…" /></div>
+        <div class="form-row"><label>Mint price (wei or ether)</label><input type="text" id="mint-price" placeholder="0.01" /></div>
+        <div class="form-row"><label>Royalty (bps, max 2000)</label><input type="text" id="mint-royalty" placeholder="500" /></div>
+        <button id="btn-mint" class="btn btn-primary">Mint artwork</button>
+      </div>
+
+      <div id="panel-list" class="tab-content">
+        <div class="form-row"><label>Artwork ID</label><input type="text" id="list-artwork" placeholder="1" /></div>
+        <div class="form-row"><label>Gallery ID</label><input type="text" id="list-gallery" placeholder="1" /></div>
+        <div class="form-row"><label>List price (wei or ether)</label><input type="text" id="list-price" placeholder="0.02" /></div>
+        <button id="btn-list" class="btn btn-primary">List in gallery</button>
+      </div>
+
+      <div id="panel-purchase" class="tab-content">
+        <div class="form-row"><label>Artwork ID</label><input type="text" id="purchase-artwork" placeholder="1" /></div>
+        <div class="form-row"><label>Send ETH (must be ≥ list price)</label><input type="text" id="purchase-value" placeholder="0.02" /></div>
+        <button id="btn-purchase" class="btn btn-primary">Purchase artwork</button>
+      </div>
+
+      <div id="panel-withdraw" class="tab-content">
+        <p style="font-size:0.85rem; color: var(--muted); margin-bottom: 0.75rem;">Withdraw your pending artist or gallery proceeds.</p>
+        <button id="btn-withdraw-artist" class="btn btn-primary">Withdraw artist proceeds</button>
+        <button id="btn-withdraw-gallery" class="btn">Withdraw gallery proceeds</button>
+        <div class="form-row" style="margin-top:0.75rem;"><label>Gallery ID (for gallery withdraw)</label><input type="text" id="withdraw-gallery-id" placeholder="1" /></div>
