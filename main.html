@@ -196,3 +196,36 @@
     </div>
 
     <div class="card">
+      <h2>Platform stats</h2>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-label">Artists</div><div id="stat-artists" class="stat-value">—</div></div>
+        <div class="stat"><div class="stat-label">Artworks</div><div id="stat-artworks" class="stat-value">—</div></div>
+        <div class="stat"><div class="stat-label">Galleries</div><div id="stat-galleries" class="stat-value">—</div></div>
+        <div class="stat"><div class="stat-label">Paused</div><div id="stat-paused" class="stat-value">—</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Actions</h2>
+      <div class="tabs">
+        <button class="tab active" data-tab="register">Register artist</button>
+        <button class="tab" data-tab="gallery">Create gallery</button>
+        <button class="tab" data-tab="mint">Mint artwork</button>
+        <button class="tab" data-tab="list">List in gallery</button>
+        <button class="tab" data-tab="purchase">Purchase</button>
+        <button class="tab" data-tab="withdraw">Withdraw</button>
+      </div>
+
+      <div id="panel-register" class="tab-content visible">
+        <div class="form-row">
+          <label>Handle hash (bytes32 hex, e.g. 0x… or leave empty for zero)</label>
+          <input type="text" id="register-handle" placeholder="0x0000…0000" />
+        </div>
+        <button id="btn-register" class="btn btn-primary">Register as artist</button>
+      </div>
+
+      <div id="panel-gallery" class="tab-content">
+        <div class="form-row">
+          <label>Gallery name hash (bytes32 hex)</label>
+          <input type="text" id="gallery-name" placeholder="0x…" />
+        </div>
